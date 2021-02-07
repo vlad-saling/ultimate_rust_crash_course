@@ -7,6 +7,10 @@
 //  trait Bite...
 
 
+
+
+
+
 // 2. Now create a struct named Grapes with a field that tracks how many grapes are left.  If you
 // need a hint, look at how it was done for Carrot at the bottom of this file (you should probably
 // use a different field, though).
@@ -21,18 +25,20 @@
 // impl Bite for...
 
 
+
+
 fn main() {
     // Once you finish #1 above, this part should work.
     let mut carrot = Carrot { percent_left: 100.0 };
-    carrot.bite();
-    println!("I take a bite: {:?}", carrot);
+    let mut grapes = Grapes { grapes_left: 25 };
+    // carrot.bite();
+    // println!("I take a bite: {:?}", carrot);
 
-    // 4. Uncomment and adjust the code below to match how you defined your
-    // Grapes struct.
-    //
-    //let mut grapes = Grapes { amount_left: 100 };
-    //grapes.bite();
-    //println!("Eat a grape: {:?}", grapes);
+    // grapes.bite();
+    // println!("I take one grape: {:?}", grapes)
+
+
+    
 
     // Challenge: Uncomment the code below. Create a generic `bunny_nibbles`
     // function that:
@@ -41,8 +47,8 @@ fn main() {
     // Hint: Define the generic type between the function name and open paren:
     //       fn function_name<T: Bite>(...)
     //
-    //bunny_nibbles(&mut carrot);
-    //println!("Bunny nibbles for awhile: {:?}", carrot);
+    bunny_nibbles(&mut carrot);
+    bunny_nibbles(&mut grapes);
 }
 
 #[derive(Debug)] // This enables using the debugging format string "{:?}"
@@ -50,9 +56,39 @@ struct Carrot {
     percent_left: f32,
 }
 
+#[derive(Debug)]
+struct Grapes {
+    grapes_left: i32,
+}
+
+// a bit more exploration
+
+
+fn bunny_nibbles<T: Bite>(item: &mut T) {
+    item.bite();
+    println!("Bunny nibbles for awhile: {:?}", item.getleftovers())
+}
+
+trait Bite {
+    fn bite(self: &mut Self);
+    fn getleftovers(self: &mut Self) -> f32;
+}
+
 impl Bite for Carrot {
     fn bite(self: &mut Self) {
         // Eat 20% of the remaining carrot. It may take awhile to eat it all...
         self.percent_left *= 0.8;
+    }
+    fn getleftovers(self: &mut Self) -> f32 {
+        self.percent_left
+    }
+}   
+
+impl Bite for Grapes {
+    fn bite(self: &mut Self) {
+        self.grapes_left -= 1;
+    }
+    fn getleftovers(self: &mut Self) -> f32 {
+        self.grapes_left as f32
     }
 }
